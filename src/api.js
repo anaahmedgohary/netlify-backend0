@@ -67,8 +67,8 @@ router
 app
     .use('/.netlify/functions/api', router)
     .use(cors())
-    .use(bodyParser.urlencoded({ extended: false }))
-    .use(bodyParser.json())
+    // .use(bodyParser.urlencoded({ extended: false }))
+    // .use(bodyParser.json())
 
 module.exports = app;
 module.exports.handler = serverless(app);
