@@ -1,0 +1,9 @@
+"scripts": {
+    "start": "NODE_ENV=development netlify-lambda serve src",
+    "dev": "./node_modules/.bin/netlify-lambda.ps1 serve src",
+    "build": "NODE_ENV=production netlify-lambda build src"
+
+  },
+
+
+  
