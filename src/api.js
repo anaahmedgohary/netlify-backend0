@@ -1,8 +1,9 @@
 const express = require("express");
-const mysql = require("mysql2");
-const serverless = require("serverless-http");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const mysql = require("mysql2");
+const serverless = require("serverless-http");
+
 
 
 require("dotenv").config();
@@ -25,39 +26,45 @@ router.get('/', (req, res) =>
 });
 
 
-router.post("/portfoliomessage", (req, res) =>
-{
-    let sql = "INSERT INTO portfoliomsg SET ?";
-    let body = req.body;
-    // let message = body.message;
-    // let { name, email } = body;
-    let name =  body.name;
-    let email = body.email;
-    let message = body.message;
+router
+    .use(cors())
+    .use(bodyParser.urlencoded({ extended: false }))
+    .use(bodyParser.json())
 
-    let post = {name: `${name}`, email: `${email}`, message: `${message}`};
 
-   // let oldpost = { name: "alex", email: "iou", message: "whyyes" }
-        
-    let query = db.query(sql, post, (err, result) =>
+    .post("/portfoliomessage", (req, res) =>
     {
-        if (err) { throw err; };
-        console.log(body);
-        res.json(req.body.name);
-    })
+        let sql = "INSERT INTO portfoliomsg SET ?";
+        let body = req.body;
+        // let message = body.message;
+        // let { name, email } = body;
+        let name = body.name;
+        let email = body.email;
+        let message = body.message;
 
-    // await db.execute(`
-    //     INSERT INTO portfoliomsg(name, email, message) VALUES(
-    //         @name, @email, @message
-    //     )
-    // `, {
-    //     name: body.name,
-    //     email: body.email,
-    //     message: body.message
-    // });
+        let post = { name: `${name}`, email: `${email}`, message: `${message}` };
 
-   // res.json(body);
-});
+        // let oldpost = { name: "alex", email: "iou", message: "whyyes" }
+
+        let query = db.query(sql, post, (err, result) =>
+        {
+            if (err) { throw err; };
+            console.log(result);
+            res.json(result);
+        })
+
+        // await db.execute(`
+        //     INSERT INTO portfoliomsg(name, email, message) VALUES(
+        //         @name, @email, @message
+        //     )
+        // `, {
+        //     name: body.name,
+        //     email: body.email,
+        //     message: body.message
+        // });
+
+        // res.json(body);
+    });
 
 
 
@@ -69,9 +76,10 @@ router.post("/portfoliomessage", (req, res) =>
 
 app
     .use(cors())
-    .use('/.netlify/functions/api', router)
     .use(bodyParser.urlencoded({ extended: false }))
     .use(bodyParser.json())
+    .use('/.netlify/functions/api', router)
+    
     
 
 //module.exports = app;
