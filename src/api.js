@@ -32,6 +32,22 @@ router
     .use(bodyParser.json())
 
 
+
+
+    .get("/savednotes", (req, res) =>
+    {
+        let sqlCommand = "SELECT * FROM mebattery";
+
+        let query = db.query(sqlCommand, (err, result) =>
+        {
+            if (err) { throw err };
+            console.log(result);
+            // res.send(JSON.stringify(result));
+            res.send(result)
+        })
+    })
+
+
     .post("/portfoliomessage", (req, res) =>
     {
         let sql = "INSERT INTO portfoliomsg SET ?";
